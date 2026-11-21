@@ -10,7 +10,7 @@
 </p>
 
 
-**! Still in beta & designed for artix (nonsystemd). There are few things specific to runit rn.
+**! Still in beta & designed for artix (nonsystemd). There are few things specific to runit rn.*
 ## Installation
 
 #### 1. Dependencies
@@ -69,6 +69,7 @@ timeout 3 pkexec macchanger -s nonexistent0    # NOT in the policy: waits for au
 - App Launcher
 - Wallpaper Changer
 - Clipboard History
+- Notifications (mako)
 
 >![NOTE]
 > More info on all these features can(*will when i make them*) be found in the [docs](./Docs/index.md)
