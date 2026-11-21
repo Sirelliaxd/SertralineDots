@@ -6,7 +6,7 @@
 ## Showcase
 
 <p align="center">
-  <img src="GitAssets/Showcase.mp4" alt="Demo" width="600" />
+  <img src="GitAssets/Showcase.gif" alt="Demo" width="600" />
 </p>
 
 ## Installation
