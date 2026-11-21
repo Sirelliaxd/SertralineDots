@@ -5,7 +5,9 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Sirelliaxd/SertralineDots?style=for-the-badge&label=REPO%20SIZE&labelColor=%2314141c&color=%23787c99)
 ## Showcase
 
-![gif](./GitAssets/Showcase.gif)
+<p align="center">
+  <img src="GitAssets/Showcase.mp4" alt="Demo" width="600" />
+</p>
 
 ## Installation
 
