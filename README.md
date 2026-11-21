@@ -59,6 +59,10 @@ timeout 3 pkexec macchanger -s nonexistent0    # NOT in the policy: waits for au
 
 >![NOTE]
 > For more information on this and the dots in general refer to the [Docs](./Docs/index.md) & [Polkit](./Docs/Quickshell/Misc/PrivilegedActions.md)
+---
+**Artix/Runit note**
+- The power menu uses loginctl, to port it swap it out for approperiate command
+- the power menu icon is artix icon, swap it out in `SertralineDots/.config/quikcshell/Theme.qml`
 
 ## Features
 - Topbar
