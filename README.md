@@ -9,6 +9,8 @@
   <img src="GitAssets/Showcase.gif" alt="Demo" width="600" />
 </p>
 
+
+**! Still in beta & designed for artix (nonsystemd). There are few things specific to runit rn.
 ## Installation
 
 #### 1. Dependencies
