@@ -1,0 +1,19 @@
+// Macchanger + Monitor mod without password prompt
+//
+// Grants exactly the three actions declared in org.sertraline.network.policy to one local user
+// in an active session. Remote sessions and every other user still get the prompt.
+//
+// Remove this file and reload polkit to get the prompt back:
+//   sudo rm /etc/polkit-1/rules.d/49-sertraline-network.rules
+//
+
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.sertraline.network.macchanger.random" ||
+         action.id == "org.sertraline.network.macchanger.permanent" ||
+         action.id == "org.sertraline.network.iw.device") &&
+        subject.user == "stella" &&
+        subject.local &&
+        subject.active) {
+        return polkit.Result.YES;
+    }
+});

@@ -1,0 +1,149 @@
+---   [########################]
+---   [ WINDOWS AND WORKSPACES ]
+---   [########################]
+
+---   ##### [ WINDOW RULES ] #####
+
+-- { Ignore maximize requests from all apps }
+local suppressMaximizeRule = hl.window_rule({
+	name = "suppress-maximize-events",
+	match = { class = ".*" },
+
+	suppress_event = "maximize",
+})
+suppressMaximizeRule:set_enabled(true)
+
+-- { Fix some dragging issues with XWayland }
+hl.window_rule({
+	name = "fix-xwayland-drags",
+	match = {
+		class = "^$",
+		title = "^$",
+		xwayland = true,
+		float = true,
+		fullscreen = false,
+		pin = false,
+	},
+
+	no_focus = true,
+})
+
+hl.window_rule({
+	name = "move-hyprland-run",
+	match = { class = "hyprland-run" },
+
+	move = "20 monitor_h-120",
+	float = true,
+})
+
+-- { Kitty terminal opacity }
+hl.window_rule({
+	name = "kitty-opacity",
+	match = { class = "kitty" },
+
+	-- opacity = "0.85 0.75",
+})
+
+hl.window_rule({ match = { class = "com.gabm.satty" }, float = true })
+hl.window_rule({ match = { class = "com.gabm.satty" }, size = "100% 100%" })
+
+-- { alow opacity on zen }
+hl.window_rule({
+	name = "zen-opacity",
+	match = { class = "zen" },
+
+	opacity = 0.99999,
+	no_blur = false,
+})
+
+-- { disable bordes on inactive windows }
+hl.window_rule({
+	name = "disable-inactive-borders",
+	match = { focus = 0 },
+
+	border_size = 0,
+})
+
+hl.window_rule = {
+	{ "float", class = "^(Wuthering Waves|steam_app_3513350)$" },
+	{ "size 1280 720", class = "^(Wuthering Waves|steam_app_3513350)$" },
+	{ "center", class = "^(Wuthering Waves|steam_app_3513350)$" },
+}
+---   ##### [ LAYER RULES ] #####
+
+-- { blur on notifications }
+hl.layer_rule({
+	match = { namespace = "notifications" },
+
+	blur = true,
+	ignore_alpha = false,
+})
+
+-- { rofi blur & disable animations}
+hl.layer_rule({
+	match = { namespace = "rofi" },
+
+	blur = true,
+	ignore_alpha = 0,
+	no_anim = true,
+})
+
+-- { waybar blur & disable animations}
+hl.layer_rule({
+	match = { namespace = "waybar" },
+
+	blur = true,
+	ignore_alpha = 0,
+	no_anim = true,
+})
+
+-- ------ { Quickshell } -------
+
+hl.layer_rule({
+	match = { namespace = "quickshell-notch" },
+
+	blur = true,
+	ignore_alpha = 0.2,
+})
+
+hl.layer_rule({
+	match = { namespace = "quickshell-app-launcher" },
+
+	blur = true,
+	ignore_alpha = 0.2,
+})
+
+hl.layer_rule({
+	match = { namespace = "quickshell-border" },
+
+	blur = true,
+	ignore_alpha = 0.2,
+})
+
+hl.layer_rule({
+	match = { namespace = "quickshell-power-dropdown" },
+
+	blur = true,
+	ignore_alpha = 0.2,
+})
+
+hl.layer_rule({
+	match = { namespace = "quickshell-volume-dropdown" },
+
+	blur = true,
+	ignore_alpha = 0.2,
+})
+
+hl.layer_rule({
+	match = { namespace = "quickshell-network-dropdown" },
+
+	blur = true,
+	ignore_alpha = 0.2,
+})
+
+hl.layer_rule({
+	match = { namespace = "quickshell-bluetooth-dropdown" },
+
+	blur = true,
+	ignore_alpha = 0.2,
+})

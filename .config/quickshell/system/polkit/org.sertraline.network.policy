@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN" "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
+<policyconfig>
+
+  <!--
+       Split out of the generic org.freedesktop.policykit.exec action with the exec.path and
+       argv1 annotations, so a polkit rule can name them (49-sertraline-network.rules does).
+
+       The defaults here are auth_admin_keep on purpose: this file on its own grants nothing,
+       removing the rules file brings the password prompt back.-->
+
+  <vendor>Sertraline Shell</vendor>
+  <vendor_url>https://github.com/Sirelliaxd/Sertraline-Shell</vendor_url>
+
+  <action id="org.sertraline.network.macchanger.random">
+    <description>Randomise a network interface MAC address</description>
+    <message>Authentication is required to set a random MAC address on a network interface</message>
+    <icon_name>network-wired</icon_name>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/macchanger</annotate>
+    <annotate key="org.freedesktop.policykit.exec.argv1">-r</annotate>
+  </action>
+
+  <action id="org.sertraline.network.macchanger.permanent">
+    <description>Restore a network interface MAC address</description>
+    <message>Authentication is required to restore the permanent MAC address of a network interface</message>
+    <icon_name>network-wired</icon_name>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/macchanger</annotate>
+    <annotate key="org.freedesktop.policykit.exec.argv1">-p</annotate>
+  </action>
+
+  <action id="org.sertraline.network.iw.device">
+    <description>Change a wireless interface's mode</description>
+    <message>Authentication is required to change the mode of a wireless interface</message>
+    <icon_name>network-wireless</icon_name>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/iw</annotate>
+    <annotate key="org.freedesktop.policykit.exec.argv1">dev</annotate>
+  </action>
+
+</policyconfig>
