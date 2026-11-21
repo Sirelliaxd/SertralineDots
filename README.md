@@ -32,7 +32,7 @@ yay -S mullvad-vpn-bin
 - [OpenDisplay](https://opendisplay.app/docs/linux/install/) for ipad second screen button*
 #### 2. Installation 
 
-**1. gitclone the repo in you're home directory**
+**1. gitclone the repo in your home directory**
 `git clone https://github.com/Sirelliaxd/SertralineDots`
 
 **2. symlink files using `stow`** (Make sure the be in the repo root!!! `~/Sertraline-Shell/` **DOUBLE CHECK**)
