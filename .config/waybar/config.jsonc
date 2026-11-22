@@ -142,11 +142,11 @@
     "menu": "on-click",
     "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
     "menu-actions": {
-      "shutdown": "loginctl poweroff",
-      "reboot": "loginctl reboot",
-      "suspend": "loginctl suspend",
-      "hibernate": "loginctl hybrid-sleep",
-      "lock": "hyprlock",
+      "shutdown": "~/.config/quickshell/system/power-action poweroff",
+      "reboot": "~/.config/quickshell/system/power-action reboot",
+      "suspend": "~/.config/quickshell/system/power-action suspend",
+      "hibernate": "~/.config/quickshell/system/power-action hybrid-sleep",
+      "lock": "~/.config/quickshell/system/power-action lock",
     },
   },
 }

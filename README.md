@@ -9,9 +9,14 @@
   <img src="GitAssets/Showcase.gif" alt="Demo" width="600" />
 </p>
 
-
-**! Still in beta & designed for artix (nonsystemd). There are few things specific to runit rn.*
+**Designed for Artix** (with cross-distro install steps below)
 ## Installation
+
+**Needs Hyprland >= 0.57.2 and Quickshell >= 0.3.2.** Run `./check-deps.sh` afterwards: it checks both versions plus every binary the configs call, and lists what is missing.
+
+The package names below are Arch/Artix ones. On any other distro, treat `./check-deps.sh` as the list and map its **binaries** to your own packages; it does not know your package manager, and a few names are Arch shaped (`7z` is `7zz` on Debian, `bluetui` and `pipemixer` are AUR only).
+
+Clone into `~/SertralineDots`. The Lua config looks for the machine specific `Local/local.lua` at that exact path (`~/SertralineDots/Local`), so a clone somewhere else silently falls back to the portable defaults until you change the path in `.config/hypr/hyprland.lua:11`.
 
 #### 1. Dependencies
 
@@ -20,11 +25,12 @@
 sudo pacman -S --needed hyprland hyprlock hyprpaper hyprshot kitty fish waybar mako \
 cliphist rofi rofi-emoji wl-clipboard libnotify yazi jq quickshell ttf-jetbrains-mono-nerd \
 pipewire pipewire-pulse wireplumber networkmanager network-manager-applet iproute2 curl \
-iw macchanger polkit hyprpolkitagent polkit-kde-agent upower procps-ng elogind tor i2pd \
+iw macchanger polkit hyprpolkitagent upower procps-ng elogind tor i2pd \
 ttf-font-awesome noto-fonts-emoji fastfetch eza stow bluetui pipemixer \
 grim slurp satty brightnessctl playerctl udiskie gnome-keyring dbus neovim \
-xdg-desktop-portal xdg-desktop-portal-hyprland
+xdg-desktop-portal xdg-desktop-portal-hyprland xdg-utils
 ```
+> Fonts are not covered by `check-deps.sh`: without `ttf-jetbrains-mono-nerd` (bar, menus, terminal), `ttf-font-awesome` (the deprecated waybar bar)
 
 **Yazi helpers** (the yazi config shells out to these for previews, search and jump)
 ```
@@ -47,23 +53,56 @@ yay -S zen-browser-bin brave-bin
 
 **From other sources:**
 - [OpenDisplay](https://opendisplay.app/docs/linux/install/) for ipad second screen button*
+
+**System services** (any distro, any init)
+
+The configs assume these are up. The repo ships no unit files, so enable them with your init (`systemctl enable --now`, runit service dirs, `rc-update add`, ...):
+```
+dbus                    session bus, used by quickshell, polkit and mako
+elogind or logind       sessions, and the power menu's loginctl (hibernate also needs swap configured)
+udev                    device nodes and the seat
+NetworkManager          the network menu and its applet
+bluetoothd              the bluetooth menu
+pipewire, wireplumber   the volume menu (pipewire-pulse as well on some distros)
+upower                  the battery readout
+udisks2                 udiskie, for automounting
+polkitd                 the authentication agent the autostart starts
+xdg-desktop-portal      with xdg-desktop-portal-hyprland as the backend, for screenshots and screencast
+tor, i2pd               optional, the network menu footer shows them as running or stopped
+```
+> Without dbus, logind or NetworkManager the menus still open, they just stay empty. That is the first thing to check on a fresh machine.
+
 #### 2. Installation 
 
 **1. gitclone the repo in your home directory**
 `git clone https://github.com/Sirelliaxd/SertralineDots`
 
-**2. Create a `Local` folder inside root repo**
-`cd ~/SertralineDots`
-`mkdir Local`
-
-
-**4. Porting to other distros/init (non artix or runit) + set machine specific vars**
-  1. replace `loginctl` calls in `~/SertralineDots/.config/quickshell/menus/PowerDropdown.qml:41-61`
-  2. Change the distro glyph (`/uf31f`) in `~/SertralineDots/.config/quickshell/Theme.qml:100` for your distros equivalent, or anything else u want.
-  3. inside `~/SertralineDots/.config/quickshell/` run `touch .qmlls.ini`
-  4. Change `subject.user == "stella"` in `~/SertralineDots/.config/quickshell/system/polkit/49-sertraline-network.rules:14` to your username
-  5. Swap the browse, notes, matrix etc apps from `~/SertralineDots/.config/hypr/modules/programs.lua` and `~/SertralineDots/.config/hypr/modules/keybinds.lua`
+**2. Setup**
+  1. Create a `Local` folder inside root repo
+    `cd ~/SertralineDots`
+    `mkdir Local`
+    - **Copy the `local-template.lua` into that dir**
+    `cp local-template.lua Local/local.lua`
+  2. Everything machine specific is a value in `Local/local.lua`; the template lists the fields.
+  > ![NOTE] you can remove the `Local` dir from .gitignore if you want to backup machine your machine specific details on github
+  3. Inside `~/SertralineDots/.config/quickshell/` run `touch .qmlls.ini`
+  4. Swap the browse, notes, matrix etc apps from `~/SertralineDots/.config/hypr/modules/programs.lua` and `~/SertralineDots/.config/hypr/modules/keybinds.lua`
   5. Delete the fish aliases u don't need in `~/SertralineDots/.config/fish/config.fish`
+  6. Run `./check-deps.sh` and install whatever it reports as missing
+
+**Machine specific lines that stay in the config**
+
+Three things cannot move to `Local/local.lua`: hyprlang cannot read Lua, and the polkit agent is a path rather than a value. Change them in place:
+```
+.config/hypr/hyprpaper.conf:6      monitor = eDP-1        the output the wallpaper is pinned to
+.config/hypr/hyprlock.conf:81      text = $LAYOUT[pl]     the layout list shown on the lock screen
+.config/hypr/modules/programs.lua  the polkit agent in the autostart
+```
+- `hyprpaper.conf`: the wallpapers itself ships with the repo (the default being `~/.config/Wallpapers/saya1.png`) and the rule below the pin already covers every other output, so on a single screen machine you can delete the pinned block outright.
+- `hyprlock.conf`: keep the list in step with `kbLayout` in `Local/local.lua` (`pl` here).
+- `programs.lua`: the agent is `/usr/lib/hyprpolkitagent/hyprpolkitagent` on Arch; point it at wherever your distro installs it.
+
+Everything else that is machine specific is a value in `Local/local.lua`.
 
 **5. symlink files using `stow`** (Make sure the be in the repo root!!! `~/Sertraline-Shell/` **DOUBLE CHECK**)
 `stow .`
@@ -71,12 +110,15 @@ yay -S zen-browser-bin brave-bin
 **6. OPTIONAL | Get rid of the password prompt when using macchanger & monitor mode 
 from the network menu**
 
+The no-password polkit rule in `~/SertralineDots/.config/quickshell/system/polkit/49-sertraline-network.rules` needs your user in the `wheel` group
+
 *Installing polkit rules*
 ```
 cd ~/SertralineDots/.config/quickshell
 sudo install -m 644 system/polkit/org.sertraline.network.policy /usr/share/polkit-1/actions/
 sudo install -m 644 system/polkit/49-sertraline-network.rules /etc/polkit-1/rules.d/
-sudo pkill polkitd
+sudo pkill polkitd                # elogind / Artix: polkit has no service manager here
+# on systemd: sudo systemctl restart polkit
 ```
 
 *Verifying*
@@ -87,14 +129,11 @@ pkexec macchanger -r nonexistent0              # authorised, then macchanger's o
 timeout 3 pkexec macchanger -s nonexistent0    # NOT in the policy: waits for authentication
 ```
 
->![NOTE]
-> For more information on this and the dots in general refer to the [Docs](./Docs/index.md) & [Polkit](./Docs/Quickshell/Misc/PrivilegedActions.md)
----
-**Artix/Runit note**
-- The power menu uses loginctl, to port it swap it out for approperiate command
-- the power menu icon is artix icon, swap it out in `SertralineDots/.config/quikcshell/Theme.qml`
-- everything that is specific to this machine, to Artix/runit and to this user is listed in [local.md](./local.md)
+**7. Start the session**
+Log out and back in through your display manager, or start Hyprland directly. The autostart in `.config/hypr/modules/programs.lua` brings up hyprpaper, mako, udiskie, the polkit agent and quickshell. If the bar never appears, check `hyprctl configerrors` first, then the shell's log at `/run/user/<uid>/quickshell/by-id/*/log.log`.
 
+>![NOTE]
+> For more information on this and the dots in general refer to the [Docs](./Docs/index.md) & [Polkit](./Docs/Quickshell/Misc/PrivilegedActions.md) (*docs are work in progress*)
 ## Features
 - Topbar
 - Power Menu
@@ -107,12 +146,16 @@ timeout 3 pkexec macchanger -s nonexistent0    # NOT in the policy: waits for au
 - Notifications (mako)
 
 >![NOTE]
+> Deprecated but still shipped: `waybar` (superseded by the quickshell bar, only its config is left) and the rofi menus (clipboard, emoji, wallpaper, cheatsheet). Do not wire up both bars.
+
+>![NOTE]
 > More info on all these features can(*will when i make them*) be found in the [docs](./Docs/index.md)
 
 *The phone icon on the topbar is a OpenDisplay toggle for ipad as a second screen*
 ## Plans/ToDo
 - [x] Migrate the topbar from waybar to quickshell
 - [x] Merge the dots and quickshell repos into one
+- [x] Make the dots easier to implement (more portable)
 - [ ] Make a default keybinds guide
 - [ ] Write the docs
 - [ ] Migrate the Wallpaper changer to quickshell
@@ -122,7 +165,6 @@ timeout 3 pkexec macchanger -s nonexistent0    # NOT in the policy: waits for au
 - [ ] Make a keybindings menu + changer
 - [ ] Make a theme editor
 - [ ] Make a installer script
-- [ ] Make the installer script (and the dots as a whole) cross-distro
 
 ---
 #### Credits

@@ -7,7 +7,7 @@ import "root:/"
 import "root:/modules"
 
 // Power menu
-// NOTE: Artix has no systemd; every action goes through loginctl.
+// NOTE: every action goes through power-action, which picks loginctl or systemctl.
 PanelWindow {
     id: root
 
@@ -38,27 +38,27 @@ PanelWindow {
         {
             label: "logout",
             icon: "\uf08b",
-            command: ["sh", "-c", "loginctl terminate-session \"$XDG_SESSION_ID\""]
+            command: ["sh", "-c", "~/.config/quickshell/system/power-action logout"]
         },
         {
             label: "suspend",
             icon: "\uf186",
-            command: ["loginctl", "suspend"]
+            command: ["sh", "-c", "~/.config/quickshell/system/power-action suspend"]
         },
         {
             label: "hibernate",
             icon: "\uf236",
-            command: ["loginctl", "hibernate"]
+            command: ["sh", "-c", "~/.config/quickshell/system/power-action hibernate"]
         },
         {
             label: "reboot",
             icon: "\uf021",
-            command: ["loginctl", "reboot"]
+            command: ["sh", "-c", "~/.config/quickshell/system/power-action reboot"]
         },
         {
             label: "shutdown",
             icon: "\uf011",
-            command: ["loginctl", "poweroff"]
+            command: ["sh", "-c", "~/.config/quickshell/system/power-action poweroff"]
         }
     ]
 

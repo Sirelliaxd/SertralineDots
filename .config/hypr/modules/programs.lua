@@ -25,7 +25,9 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("wireplumber")
 	-- hl.exec_cmd("waybar")
 	hl.exec_cmd("quickshell")
-	hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
-	hl.exec_cmd("netbird down")
+	hl.exec_cmd("/usr/lib/hyprpolkitagent/hyprpolkitagent")
+	if Local.vpnTeardown then
+		hl.exec_cmd(Local.vpnTeardown)
+	end
 	hl.exec_cmd("hyprctl setcursor sayanouta_linux_cursorpack 26")
 end)

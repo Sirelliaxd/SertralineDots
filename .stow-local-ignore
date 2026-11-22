@@ -3,5 +3,8 @@
 /.stow-local-ignore
 README.*
 LICENSE.*
+local-template.lua
+check-deps.sh
+Local
 Docs
 GitAssets

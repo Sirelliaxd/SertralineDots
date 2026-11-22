@@ -28,9 +28,6 @@ fi
 
 FULL_PATH="$WALLPAPER_DIR/$SELECTED"
 
-#hyprctl hyprpaper preload "$FULL_PATH"
-# hyprctl hyprpaper wallpaper ",$FULL_PATH"
-# hyprctl hyprpaper reload ,"$FULL_PATH"
-hyprctl hyprpaper wallpaper "eDP-1 ,$FULL_PATH, cover"
-hyprctl hyprpaper wallpaper "HDMI-A-1 ,$FULL_PATH, cover"
-hyprctl hyprpaper wallpaper " ,$FULL_PATH, cover"
+for out in $(hyprctl monitors -j | jq -r '.[].name'); do
+  hyprctl hyprpaper wallpaper "$out ,$FULL_PATH, cover"
+done

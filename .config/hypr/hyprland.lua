@@ -3,6 +3,15 @@
 --
 local custom = require("custom")
 
+-----          { LOCAL }           -----
+---
+---	machine specific values live in <repo>/Local/local.lua (see Local/local.md).
+---	The modules below read them from the `Local` global, so a clone without the
+---	file falls back to the portable defaults in those modules.
+local localDir = (os.getenv("HOME") or "") .. "/SertralineDots/Local"
+local localPath = package.searchpath("local", localDir .. "/?.lua")
+Local = localPath and dofile(localPath) or {}
+
 -----         { COLORS }           -----
 ---
 --- Wiki: https://wiki.hypr.land/Configuring/Variables/

@@ -11,7 +11,7 @@ polkit.addRule(function(action, subject) {
     if ((action.id == "org.sertraline.network.macchanger.random" ||
          action.id == "org.sertraline.network.macchanger.permanent" ||
          action.id == "org.sertraline.network.iw.device") &&
-        subject.user == "stella" &&
+        subject.isInGroup("wheel") &&
         subject.local &&
         subject.active) {
         return polkit.Result.YES;

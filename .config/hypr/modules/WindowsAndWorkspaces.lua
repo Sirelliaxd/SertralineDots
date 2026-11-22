@@ -64,11 +64,6 @@ hl.window_rule({
 	border_size = 0,
 })
 
-hl.window_rule = {
-	{ "float", class = "^(Wuthering Waves|steam_app_3513350)$" },
-	{ "size 1280 720", class = "^(Wuthering Waves|steam_app_3513350)$" },
-	{ "center", class = "^(Wuthering Waves|steam_app_3513350)$" },
-}
 ---   ##### [ LAYER RULES ] #####
 
 -- { blur on notifications }

@@ -114,7 +114,7 @@ hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
 ---     ##### [ MULTIMEDIA ] #####
 
--- { Laptop multimedia keys for volume and LCD brightness }
+-- { multimedia keys for volume }
 
 hl.bind(
 	"ALT + up",
@@ -122,10 +122,14 @@ hl.bind(
 	{ locked = true, repeating = true }
 )
 hl.bind("ALT + down", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true, repeating = true })
-hl.bind("F8", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, repeating = true })
-hl.bind("F7", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true })
-hl.bind("ALT + right", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
-hl.bind("ALT + left", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
+
+-- { backlight and this keyboard's mute keys, key names from Local/local.lua }
+if Local.keys then
+	hl.bind(Local.keys.brightnessUp, hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
+	hl.bind(Local.keys.brightnessDown, hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
+	hl.bind(Local.keys.muteSink, hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, repeating = true })
+	hl.bind(Local.keys.muteSource, hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true })
+end
 
 hl.bind(
 	"XF86AudioRaiseVolume",

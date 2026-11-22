@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Session and power actions in one place, for the shell menu and the bar menu.
+# loginctl owns the session on systemd and on elogind hosts, systemctl is the fallback,
+# so no call site has to know which init this box runs.
+# usage: power-action <lock|logout|suspend|hibernate|hybrid-sleep|reboot|poweroff>
+
+ctl=""
+if command -v loginctl >/dev/null 2>&1; then
+	ctl=loginctl
+elif command -v systemctl >/dev/null 2>&1; then
+	ctl=systemctl
+fi
+
+case "${1:-}" in
+lock) exec hyprlock ;;
+logout) [ -n "$ctl" ] && exec "$ctl" terminate-session "${XDG_SESSION_ID:-}" ;;
+suspend) [ -n "$ctl" ] && exec "$ctl" suspend ;;
+hibernate) [ -n "$ctl" ] && exec "$ctl" hibernate ;;
+hybrid-sleep) [ -n "$ctl" ] && exec "$ctl" hybrid-sleep ;;
+reboot) [ -n "$ctl" ] && exec "$ctl" reboot; exec reboot ;;
+poweroff) [ -n "$ctl" ] && exec "$ctl" poweroff; exec poweroff ;;
+*)
+	echo "usage: power-action <lock|logout|suspend|hibernate|hybrid-sleep|reboot|poweroff>" >&2
+	exit 1
+	;;
+esac

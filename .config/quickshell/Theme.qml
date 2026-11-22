@@ -97,7 +97,7 @@ Singleton {
     readonly property int appLauncherBottomitemHeight: 4  // bottom padding spacer
     // -------
     // Power Dropdown
-    readonly property string powerDropdownIcon: "\uf31f"      // Power menu topbar icon (artix logo)
+    readonly property string powerDropdownIcon: Quickshell.env("SERTRALINE_DISTRO_GLYPH") || "\uf31f"      // Power menu topbar icon (set by the hyprland config from /etc/os-release)
     readonly property int powerDropdownPanelWidth: 200  // panel width
     readonly property int powerDropdownItemHeight: 40  // height of one entry
     readonly property int powerDropdownItemRadius: 10  // entry radius

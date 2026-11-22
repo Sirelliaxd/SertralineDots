@@ -25,16 +25,40 @@ hl.env("QT_QPA_PLATFORM", "wayland:xcb")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("QT_QPA_PLATFORMTHEME", "qt4ct")
 
----   ###{ nvidia variables }###
--- { force GBM as a backend }
-hl.env("GBM_BACKEND", "nvidia-drm")
-hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
--- { Hardware acceleration }
-hl.env("LIBVA_DRIVER_NAME", "nvidia")
+---   ###{ this machine, see Local/local.lua }###
+for name, value in pairs(Local.env or {}) do
+	hl.env(name, value)
+end
 
-hl.env("AQ_DRM_DEVICES", "/dev/dri/card1:/dev/dri/card2")
+---   ###{ distro glyph for the shell }###
+-- .config/quickshell/Theme.qml reads this through Quickshell.env, so the power
+-- menu icon follows the distro instead of being hardcoded to one glyph.
+local distroGlyphs = {
+	artix = "\u{f31f}",
+	arch = "\u{f303}",
+	debian = "\u{f306}",
+	ubuntu = "\u{f31b}",
+	fedora = "\u{f30a}",
+	gentoo = "\u{f30d}",
+	void = "\u{f32e}",
+	nixos = "\u{f313}",
+}
+local osRelease = io.open("/etc/os-release", "r")
+local distroId = ""
+if osRelease then
+	for line in osRelease:lines() do
+		local id = line:match('^ID="?([%w_]+)"?')
+		if id then
+			distroId = id
+			break
+		end
+	end
+	osRelease:close()
+end
+hl.env("SERTRALINE_DISTRO_GLYPH", distroGlyphs[distroId] or "\u{f31f}")
 
 -- ###{HYPRSHOT DIR}
-hl.env("HYPRSHOT_DIR", "/home/stella/Pictures/Screenshots/")
+-- HOME relative, so no absolute path is written down
+hl.env("HYPRSHOT_DIR", (os.getenv("HOME") or "") .. "/Pictures/Screenshots/")
 
 -- hl.config({ xwayland = { force_zero_scaling = true } })
