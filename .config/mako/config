@@ -1,0 +1,18 @@
+anchor=top-right
+font=monospace 11
+background-color=#22222280
+text-color=#FFFFFFFF
+width=300
+height=150
+max-history=10
+margin=5,5,20
+padding=5
+border-size=2
+border-color=#0F0F0F80
+border-radius=4
+default-timeout=2000
+group-by=summary
+icons=1
+
+[grouped]
+format=<b>%s</b>\n%b
