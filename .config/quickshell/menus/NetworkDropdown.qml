@@ -13,6 +13,8 @@ import "root:/components"
 PanelWindow {
   id: root
 
+  screen: NetworkMenuState.screen
+
   WlrLayershell.layer: WlrLayer.Overlay
   WlrLayershell.keyboardFocus: NetworkMenuState.visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
   WlrLayershell.namespace: "quickshell-network-dropdown"

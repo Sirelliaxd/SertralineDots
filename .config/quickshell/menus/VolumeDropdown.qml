@@ -13,6 +13,8 @@ import "root:/components"
 PanelWindow {
     id: root
 
+    screen: VolumeDropdownState.screen
+
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: VolumeDropdownState.visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
     WlrLayershell.namespace: "quickshell-volume-dropdown"

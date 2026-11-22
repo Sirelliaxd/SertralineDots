@@ -13,6 +13,8 @@ import "root:/components"
 PanelWindow {
     id: root
 
+    screen: BluetoothMenuState.screen
+
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: BluetoothMenuState.visible ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
     WlrLayershell.namespace: "quickshell-bluetooth-dropdown"

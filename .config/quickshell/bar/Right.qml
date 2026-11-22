@@ -6,9 +6,9 @@ import "root:/"
 import "root:/modules"
 
 RowLayout {  // Right
-    property alias volumeWidget: volumeTxt
-    property alias networkWidget: networkTxt
-    property alias btWidget: btTxt
+    id: right
+
+    property var screen  // fixed position under tab icon
 
     anchors {
         right: parent.right
@@ -26,7 +26,11 @@ RowLayout {  // Right
         MouseArea {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
-            onClicked: NetworkMenuState.toggle()
+            onClicked: {
+                NetworkMenuState.anchorX = networkTxt.mapToItem(null, 0, 0).x + networkTxt.width / 2;
+                NetworkMenuState.screen = right.screen;
+                NetworkMenuState.toggle();
+            }
         }
     }
     BarText { // Bluetooth, click toggles the bluetooth menu
@@ -36,7 +40,11 @@ RowLayout {  // Right
         MouseArea {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
-            onClicked: BluetoothMenuState.toggle()
+            onClicked: {
+                BluetoothMenuState.anchorX = btTxt.mapToItem(null, 0, 0).x + btTxt.width / 2;
+                BluetoothMenuState.screen = right.screen;
+                BluetoothMenuState.toggle();
+            }
         }
     }
     BarText { // Volume, click toggles the volume menu
@@ -46,7 +54,11 @@ RowLayout {  // Right
         MouseArea {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
-            onClicked: VolumeDropdownState.toggle()
+            onClicked: {
+                VolumeDropdownState.anchorX = volumeTxt.mapToItem(null, 0, 0).x + volumeTxt.width / 2;
+                VolumeDropdownState.screen = right.screen;
+                VolumeDropdownState.toggle();
+            }
         }
     }
     BarText {

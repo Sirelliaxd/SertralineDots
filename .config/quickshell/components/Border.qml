@@ -101,24 +101,6 @@ Scope {
                     height: Theme.barHeight
                 }
 
-                Binding {
-                    target: VolumeDropdownState
-                    property: "anchorX"
-                    value: rightEnd.x + rightContent.x + rightContent.volumeWidget.x + rightContent.volumeWidget.width / 2
-                }
-
-                Binding {
-                    target: NetworkMenuState
-                    property: "anchorX"
-                    value: rightEnd.x + rightContent.x + rightContent.networkWidget.x + rightContent.networkWidget.width / 2
-                }
-
-                Binding {
-                    target: BluetoothMenuState
-                    property: "anchorX"
-                    value: rightEnd.x + rightContent.x + rightContent.btWidget.x + rightContent.btWidget.width / 2
-                }
-
                 Rectangle { // bottom
                     anchors {
                         bottom: parent.bottom
@@ -192,6 +174,7 @@ Scope {
 
                     Right {
                         id: rightContent
+                        screen: screenRoot.modelData  // fixed position under tab icon
                     }
                 }
             }

@@ -12,6 +12,8 @@ Singleton {
 
     property real anchorX: 0
 
+    property var screen: null
+
     function show() {
         visible = true;
     }
