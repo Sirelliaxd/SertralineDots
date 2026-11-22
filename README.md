@@ -2,7 +2,7 @@
 
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/Sirelliaxd/SertralineDots?style=for-the-badge&labelColor=%2314141c&color=%23e6e6e8)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Sirelliaxd/SertralineDots?style=for-the-badge&label=REPO%20SIZE&labelColor=%2314141c&color=%23787c99)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Sirelliaxd/SertralineDots?style=for-the-badge&label=CODE%20SIZE&labelColor=%2314141c&color=%23787c99)
 ## Showcase
 
 <p align="center">
