@@ -17,17 +17,34 @@
 
 **Pacman Install Script**
 ```
-sudo pacman -S --needed hyprland kitty hyprpaper fish waybar fish mako cliphist rofi \
-rofi-emoji wl-clipboard yazi jq quickshell ttf-jetbrains-mono-nerd pipewire \
-pipewire-pulse wireplumber networkmanager network-manager-applet iproute2 curl \
-iw macchanger polkit hyprpolkitagent upower procps-ng elogind tor i2pd ttf-font-awesome \
-noto-fonts-emoji fastfetch eza stow bluetui nmtui pipemixer
+sudo pacman -S --needed hyprland hyprlock hyprpaper hyprshot kitty fish waybar mako \
+cliphist rofi rofi-emoji wl-clipboard libnotify yazi jq quickshell ttf-jetbrains-mono-nerd \
+pipewire pipewire-pulse wireplumber networkmanager network-manager-applet iproute2 curl \
+iw macchanger polkit hyprpolkitagent polkit-kde-agent upower procps-ng elogind tor i2pd \
+ttf-font-awesome noto-fonts-emoji fastfetch eza stow bluetui pipemixer \
+grim slurp satty brightnessctl playerctl udiskie gnome-keyring dbus neovim \
+xdg-desktop-portal xdg-desktop-portal-hyprland
 ```
+
+**Yazi helpers** (the yazi config shells out to these for previews, search and jump)
+```
+sudo pacman -S --needed fd ripgrep fzf zoxide imagemagick 7zip poppler ffmpeg mediainfo \
+perl-image-exiftool
+```
+> `fzf` and `zoxide` also need their yazi plugins: `ya pkg add yazi-rs/plugins:fzf` and `ya pkg add yazi-rs/plugins:zoxide`
 
 **AUR Packages**
 ```
-yay -S mullvad-vpn-bin
+yay -S mullvad-vpn-bin python-pywal
 ```
+
+**Extras** (fish aliases and app keybinds, swap for your own)
+```
+sudo pacman -S --needed nodejs android-tools lazygit cmatrix hyprshutdown cava librewolf obsidian ttf-cascadia-code-nerd
+yay -S zen-browser-bin brave-bin
+```
+- `ttf-cascadia-code-nerd` is only needed by the deprecated waybar bar (`waybar/style.css`)
+
 **From other sources:**
 - [OpenDisplay](https://opendisplay.app/docs/linux/install/) for ipad second screen button*
 #### 2. Installation 
@@ -35,10 +52,23 @@ yay -S mullvad-vpn-bin
 **1. gitclone the repo in your home directory**
 `git clone https://github.com/Sirelliaxd/SertralineDots`
 
-**2. symlink files using `stow`** (Make sure the be in the repo root!!! `~/Sertraline-Shell/` **DOUBLE CHECK**)
+**2. Create a `Local` folder inside root repo**
+`cd ~/SertralineDots`
+`mkdir Local`
+
+
+**4. Porting to other distros/init (non artix or runit) + set machine specific vars**
+  1. replace `loginctl` calls in `~/SertralineDots/.config/quickshell/menus/PowerDropdown.qml:41-61`
+  2. Change the distro glyph (`/uf31f`) in `~/SertralineDots/.config/quickshell/Theme.qml:100` for your distros equivalent, or anything else u want.
+  3. inside `~/SertralineDots/.config/quickshell/` run `touch .qmlls.ini`
+  4. Change `subject.user == "stella"` in `~/SertralineDots/.config/quickshell/system/polkit/49-sertraline-network.rules:14` to your username
+  5. Swap the browse, notes, matrix etc apps from `~/SertralineDots/.config/hypr/modules/programs.lua` and `~/SertralineDots/.config/hypr/modules/keybinds.lua`
+  5. Delete the fish aliases u don't need in `~/SertralineDots/.config/fish/config.fish`
+
+**5. symlink files using `stow`** (Make sure the be in the repo root!!! `~/Sertraline-Shell/` **DOUBLE CHECK**)
 `stow .`
 
-**3. OPTIONAL | Get rid of the password prompt when using macchanger & monitor mode 
+**6. OPTIONAL | Get rid of the password prompt when using macchanger & monitor mode 
 from the network menu**
 
 *Installing polkit rules*
@@ -63,6 +93,7 @@ timeout 3 pkexec macchanger -s nonexistent0    # NOT in the policy: waits for au
 **Artix/Runit note**
 - The power menu uses loginctl, to port it swap it out for approperiate command
 - the power menu icon is artix icon, swap it out in `SertralineDots/.config/quikcshell/Theme.qml`
+- everything that is specific to this machine, to Artix/runit and to this user is listed in [local.md](./local.md)
 
 ## Features
 - Topbar
